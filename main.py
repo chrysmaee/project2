@@ -5,7 +5,7 @@ import time
 
 def leave_one_out_cross_validation(data, current_set, feature_to_add, forward_or_backward):
     number_correctly_classified = 0
-    indices_to_check = current_set.copy()
+    indices_to_check = current_set.copy()  # use this to only calculate relevant columns
     if forward_or_backward == "forward":
         indices_to_check.append(feature_to_add)
     if forward_or_backward == "backward":
@@ -18,7 +18,7 @@ def leave_one_out_cross_validation(data, current_set, feature_to_add, forward_or
             if other_record != record:
                 distance = 0
                 for x in range(0, len(object_to_classify)):
-                    if x in indices_to_check:
+                    if x in indices_to_check:  # check if we want to include this col in calculations
                         distance += pow(object_to_classify[x] - other_record[x], 2)
                 distance = math.sqrt(distance)
                 if distance < nearest_neighbor_distance:
@@ -38,7 +38,7 @@ def feature_search_demo():
     print("There are", len(data[0]) - 1, "features.")
     print("There are", len(data), "records.")
     user_choice = input("Enter 1 for forward selection\nEnter 2 for backward elimination\n")
-    if user_choice == "1":
+    if user_choice == "1":  # forward selection
         current_set_of_features = []
         list_of_accuracies = []
         for i in range(1, len(data[0])):
@@ -62,7 +62,7 @@ def feature_search_demo():
         print()
         print("The best feature subset is", current_set_of_features[0:list_of_accuracies.index(highest_accuracy) + 1])
         print("This subset has an accuracy of", highest_accuracy)
-    if user_choice == "2":
+    if user_choice == "2":  # backward elimination
         current_set_of_features = []
         for i in range(1, len(data[0])):
             current_set_of_features.append(i)
@@ -98,4 +98,3 @@ def feature_search_demo():
 
 
 feature_search_demo()
-
